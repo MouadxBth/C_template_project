@@ -6,11 +6,21 @@
 #    By: mbouthai <mbouthai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/20 15:36:27 by mbouthai          #+#    #+#              #
-#    Updated: 2022/07/26 15:41:36 by mbouthai         ###   ########.fr        #
+#    Updated: 2022/08/06 21:36:02 by mbouthai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:= main
+
+BOLD	:=\033[1m
+
+RESET	:=\033[0m
+
+RED	:=\033[91m
+
+GREEN	:=\033[92m
+
+CYAN	:=\033[96m
 
 INC_DIR	:= inc/ 
 
@@ -53,21 +63,23 @@ all: $(LIBFT) $(PRINTF) $(NAME)
 bonus: $(NAME)
 
 $(LIBFT):
-	@echo "\nBUILDING LIBFT\n"
-	@make bonus -C libft
+	@echo "\n$(CYAN)BUILDING LIBFT$(RESET)\n"
+	@make -C libft
 
 $(PRINTF):
-	@echo "\nBUILDING FT_PRINTF\n"
+	@echo "\n$(CYAN)BUILDING FT_PRINTF$(RESET)\n"
 	@make -C ft_printf
 
 $(NAME): $(OBJS)
-	@echo "\nBUILDING PROJECT\n"
+	@echo "\n$(GREEN)BUILDING PROJECT$(RESET)\n"
 	$(CC) $(CFLAGS) $^ -o $@ $(LFLAGS)
 
 $(OBJ_DIR):
+	@echo "\n$(BOLD)CREATING OBJ DIRECTORY$(RESET)\n"
 	@mkdir -p $@
 
 $(DEP_DIR):
+	@echo "\n$(BOLD)CREATING DEP DIRECTORY$(RESET)\n"
 	@mkdir -p $@
 
 $(OBJS): | $(OBJ_DIR)
@@ -78,29 +90,29 @@ $(OBJS): $(OBJ_DIR)%.o: $(SRC_DIR)%
 	$(CC) $(CFLAGS) -MMD -MF $(addprefix $(DEP_DIR), $(notdir $(<:%=%.d))) -c $< -o $@
 
 cleanobj:
-	@echo "\nCLEANING OBJECT FILES\n"
+	@echo "\n$(RED)CLEANING OBJECT FILES$(RESET)\n"
 	-$(RM) $(wildcard $(OBJS))
 
 cleanobjdir: cleanobj
 	-$(RMDIR) $(OBJ_DIR)
 
 cleandep:
-	@echo "\nCLEANING DEPENDENCIES\n"
+	@echo "\n$(RED)CLEANING DEPENDENCIES$(RESET)\n"
 	-$(RM) $(wildcard $(DEPS))
 
 cleandepdir: cleandep
 	-$(RMDIR) $(DEP_DIR)
 
 clean: cleanobjdir cleandepdir
-	@echo "\nCLEANING LIBFT\n"
+	@echo "\n$(RED)CLEANING LIBFT$(RESET)\n"
 	@make clean -C libft
-	@echo "\nCLEANING FT_PRINTF\n"
+	@echo "\n$(RED)CLEANING FT_PRINTF$(RESET)\n"
 	@make clean -C ft_printf
 
 fclean: clean
-	@echo "\nFCLEANING LIBFT\n"
+	@echo "\n$(RED)FCLEANING LIBFT$(RESET)\n"
 	@make fclean -C libft
-	@echo "\nFCLEANING FT_PRINTF\n"
+	@echo "\n$(RED)FCLEANING FT_PRINTF$(RESET)\n"
 	@make fclean -C ft_printf
 	-$(RM) $(NAME)
 
